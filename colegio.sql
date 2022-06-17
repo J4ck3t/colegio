@@ -13,12 +13,12 @@ USE miprimerabase
 		student_country VARCHAR(255),
 		student_gender VARCHAR(1),
 		student_dni CHAR(9),
-		student_course VARCHAR(255),
+		student_grade VARCHAR(255),
 		student_dateofbirth DATE
 )
 -- Insertamos datos de estudiantes. Todos falsos y random. No se añade ID para que se genere sola.
 		INSERT INTO students 
-		(student_name, student_surname, student_country, student_gender, student_dni, student_course, student_dateofbirth) VALUES
+		(student_name, student_surname, student_country, student_gender, student_dni, student_grade, student_dateofbirth) VALUES
 			('Brian', 'Guillén', 'Argentina', 'M', '11111111A', 'Administración de sistemas informáticos en red', '1994-01-11'),
 			('Tomás', 'Vera', 'España', 'M', '12345678T', 'Estudios de policía nacional', '1994-11-23'),
 			('Álvaro', 'Castillo', 'España', 'M', '23456789A', 'Modelado 3D', '1996-05-22'),
@@ -52,3 +52,29 @@ USE miprimerabase
 		('Chuck', 'Norris', 'Estados Unidos', 'M', '74143696C', '1950-07-07'),
 		('Jackie', 'Chan', 'China', 'M', '45658525J', '1945-02-02'),
 		('Artiom', 'Metrinsky', 'Rusia', 'M', '74359615A', '1988-08-08');
+
+-- Creo la tabla de asignaturas. En esta tabla voy a probar a poner más de 1 FK.
+	CREATE TABLE grade (
+		grade_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		grade_name VARCHAR(255),
+		grade_initials VARCHAR (255),
+		grade_description VARCHAR(255),
+		grade_tutor INT NOT NULL,
+		grade_facility INT NOT NULL,
+		FOREIGN KEY (grade_tutor) REFERENCES teachers(teacher_id),
+		FOREIGN KEY (grade_facility) REFERENCES facilities(facility_id)
+	)
+
+-- Se insertan datos de las asignaturas a tomar. Lo mismo, todo inventado. En este punto, al probar
+-- el código por partes, la referencia a la tabla facilities da error porque todavía no se ha creado
+-- pero es válida. Aquí en teoría los campos grade_tutor y grade_facility se deberían rellenar solor
+-- usando los datos de las tablas que referencian.
+		INSERT INTO grade (grade_name, grade_initials, grade_description, grade_tutor, grade_facility) VALUES
+		('Administración de sistemas informáticos en red', 'ASIR', 'Ahondar en las tecnologías de red'),
+		('Estudios de policía nacional', 'ESPOL', 'Aprender a proteger y servir'),
+		('Modelado 3D', 'MODE', 'Aprender a hacer modelos 3D'),
+		('Diseño de aplicaciones multiplataforma', 'DAM', 'El uso de herramientas para desarrollar aplicaciones'),
+		('Dirección de empresas', 'DIEM', 'Cómo llevar una empresa'),
+		('Cuidado social', 'CUSO', 'Ayuda a personas'),
+		('Anestesia y cirugía elemental', 'ANES', 'Aprender a ser anestesista'),
+		
