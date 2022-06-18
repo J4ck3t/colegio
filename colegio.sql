@@ -53,6 +53,23 @@ USE miprimerabase
 		('Jackie', 'Chan', 'China', 'M', '45658525J', '1945-02-02'),
 		('Artiom', 'Metrinsky', 'Rusia', 'M', '74359615A', '1988-08-08');
 
+-- Última tabla de momento en esta primera tabla de prueba. Los edificios donde se imparten las clases.
+-- Mi idea es poder relacionarlo todo, aunque necesito investigar más sobre el diseño de las bases en si.
+-- Tabla edificios, una vez más, todo inventado.
+	CREATE TABLE facilities (
+		facility_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		facility_building_name VARCHAR(255),
+		facilitiy_location VARCHAR(255)
+	)
+
+-- Ahora inserto datos de los edificios. En teoría, si todo va bien, la tabla anterior debería referenciar
+-- correctamente a esta en tanto grade_facility --> facility_id.
+		INSERT INTO facilities (facility_building_name, facilitiy_location) VALUES
+		('Edificio Victoria', 'Ala norte'),
+		('Edificio Esfuerzo', 'Ala sur'),
+		('Edificio Dedicación', 'Ala este'),
+		('Edificio Constancia', 'Ala oeste');
+
 -- Creo la tabla de asignaturas. En esta tabla voy a probar a poner más de 1 FK.
 	CREATE TABLE grade (
 		grade_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -76,5 +93,5 @@ USE miprimerabase
 		('Diseño de aplicaciones multiplataforma', 'DAM', 'El uso de herramientas para desarrollar aplicaciones'),
 		('Dirección de empresas', 'DIEM', 'Cómo llevar una empresa'),
 		('Cuidado social', 'CUSO', 'Ayuda a personas'),
-		('Anestesia y cirugía elemental', 'ANES', 'Aprender a ser anestesista'),
+		('Anestesia y cirugía elemental', 'ANES', 'Aprender a ser anestesista');
 		
