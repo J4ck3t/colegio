@@ -57,10 +57,11 @@ USE miprimerabase
 -- Mi idea es poder relacionarlo todo, aunque necesito investigar más sobre el diseño de las bases en si.
 -- Tabla edificios, una vez más, todo inventado.
 	CREATE TABLE facilities (
-		facility_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		facility_id INT NOT NULL AUTO_INCREMENT,
 		facility_building_name VARCHAR(255),
-		facilitiy_location VARCHAR(255)
-	)
+		facilitiy_location VARCHAR(255),
+		FOREIGN KEY (facility_id) REFERENCES grade_and_facility(gf_id)
+	);
 
 -- Ahora inserto datos de los edificios. En teoría, si todo va bien, la tabla anterior debería referenciar
 -- correctamente a esta en tanto grade_facility --> facility_id.
@@ -75,23 +76,65 @@ USE miprimerabase
 		grade_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 		grade_name VARCHAR(255),
 		grade_initials VARCHAR (255),
-		grade_description VARCHAR(255),
-		grade_tutor INT NOT NULL,
-		grade_facility INT NOT NULL,
-		FOREIGN KEY (grade_tutor) REFERENCES teachers(teacher_id),
-		FOREIGN KEY (grade_facility) REFERENCES facilities(facility_id)
-	)
+		grade_description VARCHAR(255)
+--		grade_tutor INT NOT NULL,
+--		grade_facility INT NOT NULL,
+--		FOREIGN KEY (grade_tutor) REFERENCES teachers(teacher_id),
+--		FOREIGN KEY (grade_facility) REFERENCES facilities(facility_id)
+	);
 
 -- Se insertan datos de las asignaturas a tomar. Lo mismo, todo inventado. En este punto, al probar
 -- el código por partes, la referencia a la tabla facilities da error porque todavía no se ha creado
 -- pero es válida. Aquí en teoría los campos grade_tutor y grade_facility se deberían rellenar solor
 -- usando los datos de las tablas que referencian.
-		INSERT INTO grade (grade_name, grade_initials, grade_description, grade_tutor, grade_facility) VALUES
+		INSERT INTO grade (grade_name, grade_initials, grade_description) VALUES
 		('Administración de sistemas informáticos en red', 'ASIR', 'Ahondar en las tecnologías de red'),
 		('Estudios de policía nacional', 'ESPOL', 'Aprender a proteger y servir'),
 		('Modelado 3D', 'MODE', 'Aprender a hacer modelos 3D'),
 		('Diseño de aplicaciones multiplataforma', 'DAM', 'El uso de herramientas para desarrollar aplicaciones'),
 		('Dirección de empresas', 'DIEM', 'Cómo llevar una empresa'),
 		('Cuidado social', 'CUSO', 'Ayuda a personas'),
-		('Anestesia y cirugía elemental', 'ANES', 'Aprender a ser anestesista');
+		('Anestesia y cirugía elemental', 'ANES', 'Aprender a ser anestesista'),
+		('Filosofía', 'FILO', 'Para pensar, señores'),
+		('Ecología', 'ECOL', 'Para cuidar el medioambiente, señores');
 		
+-- Como medida de solucionar los problemas que he tenido, voy a crear tablas intermedias para relacionar
+-- a los profesores con las asignaturas, y luego para relacionar asignaturas con edificios.
+	CREATE TABLE teacher_and_grade (
+		tg_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+		tg_teachername VARCHAR(255),
+		tg_teachersurname VARCHAR(255),
+		tg_teachergrade VARCHAR(255)
+	);
+
+-- Y ahora reparto asignaturas a los profesores.
+		INSERT INTO teacher_and_grade (tg_teachername, tg_teachersurname, tg_teachergrade) VALUES
+		('Vin', 'Diesel', 'Dirección de empresas'),
+		('Jason', 'Statham', 'Ecología'),
+		('Calia', 'Menethil', 'Cuidado social'),
+		('Scarlett', 'Johansson', 'Diseño de aplicaciones multiplataforma'),
+		('Eva', 'Green', 'Administración de sistemas informáticos en red'),
+		('Elizabeth', 'DeWitt', 'Filosofía'),
+		('Chuck', 'Norris', 'Anestesia y cirugía elemental'),
+		('Jackie', 'Chan', 'Modelado 3D'),
+		('Artiom', 'Metrinsky', 'Estudios de policía nacional');
+
+-- Segunda tabla de referencias, esta junta a las asignaturas con el edificio en el que se imparten.
+-- En esta parte estoy muy confundido, tengo que enfocar mas esfuerzos en el diseño de las bases y sus relaciones.
+	CREATE TABLE grade_and_facility (
+		gf_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, --esta debería referenciar a facility_id
+		gf_facname VARCHAR(255),
+		gf_facgrade VARCHAR(255)
+	);
+
+-- Inserto valores, en esta parte estoy bastante perdido, tengo que encontrar alguien que pueda aclararme dudas.
+		INSERT INTO grade_and_facility (gf_facname, gf_facgrade) VALUES
+		('Edificio Victoria', 'Dirección de empresas'),
+		('Edificio Esfuerzo', 'Ecología'),
+		('Edificio Dedicación', 'Cuidado social'),
+		('Edificio Constancia', 'Diseño de aplicaciones multiplataforma'),
+		('Edificio Victoria', 'Administración de sistemas informáticos en red'),
+		('Edificio Esfuerzo', 'Filosofía'),
+		('Edificio Dedicación', 'Anestesia y cirugía elemental'),
+		('Edificio Constancia', 'Modelado 3D'),
+		('Edificio Victoria', 'Estudios de policía nacional');
